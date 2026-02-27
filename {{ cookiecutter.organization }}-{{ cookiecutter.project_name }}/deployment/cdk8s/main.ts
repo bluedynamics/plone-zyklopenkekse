@@ -31,23 +31,43 @@ export class {{ cookiecutter.project_name | capitalize }}Chart extends Chart {
       SECRET_POSTGRESQL_PASSWORD: {
         valueFrom: { secretKeyRef: { name: `${db.secretName}`, key: 'password' } },
       },
+{% if cookiecutter.storage_backend == "relstorage" %}
       INSTANCE_db_storage: { value: 'relstorage' },
       INSTANCE_db_blob_mode: { value: 'cache' },
       INSTANCE_db_relstorage: { value: 'postgresql' },
       INSTANCE_db_relstorage_postgresql_dsn: {
         value: `host='${db.serviceName}' dbname='plone' user='$(SECRET_POSTGRESQL_USERNAME)' password='$(SECRET_POSTGRESQL_PASSWORD)'`,
       },
+{% elif cookiecutter.storage_backend == "pgjsonb" %}
+      INSTANCE_db_storage: { value: 'pgjsonb' },
+      INSTANCE_db_blob_mode: { value: 'cache' },
+      INSTANCE_db_pgjsonb_dsn: {
+        value: `host='${db.serviceName}' dbname='plone' user='$(SECRET_POSTGRESQL_USERNAME)' password='$(SECRET_POSTGRESQL_PASSWORD)'`,
+      },
+{% else %}
+      // Configure your database storage via environment variables
+{% endif %}
     });
 {% else %}
 
     // ---- Database environment (configure for your database) ----
     const env = new kplus.Env([], {
+{% if cookiecutter.storage_backend == "relstorage" %}
       INSTANCE_db_storage: { value: 'relstorage' },
       INSTANCE_db_blob_mode: { value: 'cache' },
       INSTANCE_db_relstorage: { value: 'postgresql' },
       INSTANCE_db_relstorage_postgresql_dsn: {
         value: "host='db-host' dbname='plone' user='plone' password='secret'",
       },
+{% elif cookiecutter.storage_backend == "pgjsonb" %}
+      INSTANCE_db_storage: { value: 'pgjsonb' },
+      INSTANCE_db_blob_mode: { value: 'cache' },
+      INSTANCE_db_pgjsonb_dsn: {
+        value: "host='db-host' dbname='plone' user='plone' password='secret'",
+      },
+{% else %}
+      // Configure your database storage via environment variables
+{% endif %}
     });
 {% endif %}
 

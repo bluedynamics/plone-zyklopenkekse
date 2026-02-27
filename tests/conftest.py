@@ -18,6 +18,7 @@ def default_context():
         "pnpm_version": "9",
         "initial_user_password": "admin",
         "include_frontend": "yes",
+        "storage_backend": "pgjsonb",
         "container_registry": "ghcr.io/testorg",
     }
 

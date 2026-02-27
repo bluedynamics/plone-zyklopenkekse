@@ -85,6 +85,11 @@ docker run {{ cookiecutter.__container_registry }}/{{ cookiecutter.__target }}:l
 {% if cookiecutter.include_frontend == "yes" %}
 - **Frontend**: Volto {{ cookiecutter.volto_version }}, Node.js {{ cookiecutter.node_version }}, pnpm {{ cookiecutter.pnpm_version }}
 {% endif %}
+{% if cookiecutter.storage_backend == "relstorage" %}
+- **Database**: RelStorage (PostgreSQL)
+{% elif cookiecutter.storage_backend == "pgjsonb" %}
+- **Database**: PGJsonB (PostgreSQL)
+{% endif %}
 - **Deployment**: cdk8s-plone (Kubernetes via ArgoCD)
 {% if cookiecutter.include_frontend == "yes" %}
 - **Build**: mxmake (Makefile generation for both backend and frontend)

@@ -196,6 +196,7 @@ async def test_collect_values_all_fields(app, mock_versions):
             "pnpm_version",
             "initial_user_password",
             "include_frontend",
+            "storage_backend",
             "container_registry",
             "ci_platform",
             "include_varnish",

@@ -17,9 +17,11 @@ The image serves backend roles, selected via the entrypoint argument:
 {% if cookiecutter.include_frontend == "yes" %}
 | `start-frontend` | 3000 | Volto Node.js server |
 {% endif %}
+{% if cookiecutter.storage_backend == "relstorage" %}
 | `export` | - | ZODB export |
 | `import` | - | ZODB import |
 | `pack` | - | ZODB pack (garbage collection) |
+{% endif %}
 
 Build the image:
 

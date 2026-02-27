@@ -193,6 +193,18 @@ class ZyklopenkekseCreateApp(App):
                     classes="form-input",
                 )
             with Horizontal(classes="form-row"):
+                yield Static("Storage Backend", classes="form-label")
+                yield Select(
+                    [
+                        ("PGJsonB", "pgjsonb"),
+                        ("RelStorage (PostgreSQL)", "relstorage"),
+                        ("None (custom)", "none"),
+                    ],
+                    value="pgjsonb",
+                    id="storage_backend",
+                    classes="form-input",
+                )
+            with Horizontal(classes="form-row"):
                 yield Static("CI Platform", classes="form-label")
                 yield Select(
                     [("GitHub Actions", "github"), ("GitLab CI", "gitlab")],
@@ -389,6 +401,7 @@ class ZyklopenkekseCreateApp(App):
             "pnpm_version": _get_select("pnpm_version"),
             "initial_user_password": _get_input("initial_user_password"),
             "include_frontend": _get_switch("include_frontend"),
+            "storage_backend": _get_select("storage_backend"),
             "container_registry": _get_input("container_registry"),
             "ci_platform": _get_select("ci_platform"),
             "include_varnish": _get_switch("include_varnish"),

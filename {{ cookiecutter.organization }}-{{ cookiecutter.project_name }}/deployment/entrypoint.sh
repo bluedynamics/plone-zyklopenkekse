@@ -4,10 +4,14 @@ set -e
 # ---------------------------------------------------------------------------
 # {{ cookiecutter.title }} OCI Image Entrypoint
 #
-{% if cookiecutter.include_frontend == "yes" %}
+{% if cookiecutter.include_frontend == "yes" and cookiecutter.storage_backend == "relstorage" %}
 # Built-in commands: start-backend, start-frontend, export, import, pack
-{% else %}
+{% elif cookiecutter.include_frontend == "yes" %}
+# Built-in commands: start-backend, start-frontend
+{% elif cookiecutter.storage_backend == "relstorage" %}
 # Built-in commands: start-backend, export, import, pack
+{% else %}
+# Built-in commands: start-backend
 {% endif %}
 # Extensible: drop scripts into /deployment/commands.d/<command>.sh
 # ---------------------------------------------------------------------------
@@ -41,6 +45,7 @@ case "$1" in
         cd /frontend && exec pnpm start:prod
         ;;
 {% endif %}
+{% if cookiecutter.storage_backend == "relstorage" %}
     export)
         setup_zope
         echo "Exporting ZODB to filestorage"
@@ -56,6 +61,7 @@ case "$1" in
         echo "Packing ZODB"
         exec zodbpack /backend/instance/etc/relstorage-pack.conf
         ;;
+{% endif %}
     *)
         exec "$@"
         ;;

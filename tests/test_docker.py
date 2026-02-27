@@ -52,8 +52,9 @@ def test_entrypoint_references_deployment(cookies, default_context):
 
 
 def test_entrypoint_has_all_commands(cookies, default_context):
-    """Entrypoint supports all expected commands (with frontend)."""
-    result = cookies.bake(extra_context=default_context)
+    """Entrypoint supports expected commands (with frontend + relstorage)."""
+    ctx = {**default_context, "storage_backend": "relstorage"}
+    result = cookies.bake(extra_context=ctx)
     content = (result.project_path / "deployment" / "entrypoint.sh").read_text()
     for cmd in ["start-backend", "start-frontend", "export", "import", "pack"]:
         assert cmd in content, f"Missing command: {cmd}"
