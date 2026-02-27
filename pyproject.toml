@@ -20,5 +20,8 @@ test = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 
+[tool.setuptools.packages.find]
+include = ["helpers*"]
+
 [project.scripts]
 zyklopenkekse = "helpers.create:main"
