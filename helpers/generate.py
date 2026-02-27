@@ -1,4 +1,4 @@
-"""Generate a project from the cyclop cookiecutter template."""
+"""Generate a project from the zyklopenkekse cookiecutter template."""
 from __future__ import annotations
 
 import os

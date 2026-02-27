@@ -2,7 +2,7 @@
 set -e
 
 # ---------------------------------------------------------------------------
-# Cyclop OCI Image Entrypoint
+# OCI Image Entrypoint
 #
 # Built-in commands: start-backend, start-frontend, export, import, pack
 # Extensible: drop scripts into /backend/deployment/commands.d/<command>.sh

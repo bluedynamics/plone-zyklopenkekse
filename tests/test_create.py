@@ -35,15 +35,15 @@ def mock_versions():
 
 @pytest.fixture
 def app():
-    from helpers.create import CyclopCreateApp
+    from helpers.create import ZyklopenkekseCreateApp
 
-    return CyclopCreateApp()
+    return ZyklopenkekseCreateApp()
 
 
 async def test_app_starts(app, mock_versions):
     """App starts without error."""
     async with app.run_test() as pilot:
-        assert app.title == "Cyclop - Create Plone/Volto Project"
+        assert app.title == "Zyklopenkekse - Create Plone/Volto Project"
 
 
 async def test_app_has_all_input_fields(app, mock_versions):
@@ -208,9 +208,9 @@ async def test_fallback_versions_on_error(mock_versions):
     """Fallback versions are set when fetching fails."""
     mock_versions["plone"].side_effect = Exception("Network error")
 
-    from helpers.create import CyclopCreateApp
+    from helpers.create import ZyklopenkekseCreateApp
 
-    app = CyclopCreateApp()
+    app = ZyklopenkekseCreateApp()
     async with app.run_test() as pilot:
         await app.workers.wait_for_complete()
 

@@ -23,6 +23,6 @@ backend/.ruff_cache
 # Documentation (not needed in image)
 docs/
 
-# Reference and source checkouts (cyclop-specific)
+# Reference and source checkouts (development only)
 reference/
 sources/

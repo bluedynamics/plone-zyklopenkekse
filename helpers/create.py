@@ -1,4 +1,4 @@
-"""Cyclop TUI — interactive project creation with Textual."""
+"""Zyklopenkekse TUI — interactive project creation with Textual."""
 from __future__ import annotations
 
 import subprocess
@@ -32,10 +32,10 @@ def _git_config(key: str, fallback: str = "") -> str:
     return fallback
 
 
-class CyclopCreateApp(App):
+class ZyklopenkekseCreateApp(App):
     """Textual app for creating Plone/Volto projects."""
 
-    TITLE = "Cyclop - Create Plone/Volto Project"
+    TITLE = "Zyklopenkekse - Create Plone/Volto Project"
     CSS = """
     Screen {
         layout: vertical;
@@ -398,8 +398,8 @@ class CyclopCreateApp(App):
 
 
 def main():
-    """Entry point for cyclop CLI."""
-    app = CyclopCreateApp()
+    """Entry point for zyklopenkekse CLI."""
+    app = ZyklopenkekseCreateApp()
     result = app.run()
     if result:
         from .generate import generate_project

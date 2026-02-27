@@ -178,36 +178,6 @@ wheels = [
 ]
 
 [[package]]
-name = "cyclop"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "cookiecutter" },
-    { name = "httpx" },
-    { name = "mxmake" },
-    { name = "textual" },
-]
-
-[package.optional-dependencies]
-test = [
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cookies" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "cookiecutter", specifier = ">=2.6" },
-    { name = "httpx" },
-    { name = "mxmake" },
-    { name = "pytest", marker = "extra == 'test'" },
-    { name = "pytest-asyncio", marker = "extra == 'test'" },
-    { name = "pytest-cookies", marker = "extra == 'test'" },
-    { name = "textual", specifier = ">=1.0" },
-]
-provides-extras = ["test"]
-
-[[package]]
 name = "editor"
 version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -470,6 +440,36 @@ sdist = { url = "https://files.pythonhosted.org/packages/1b/04/fea538adf7dbbd6d1
 wheels = [
     { url = "https://files.pythonhosted.org/packages/48/31/05e764397056194206169869b50cf2fee4dbbbc71b344705b9c0d878d4d8/platformdirs-4.9.2-py3-none-any.whl", hash = "sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd", size = 21168, upload-time = "2026-02-16T03:56:08.891Z" },
 ]
+
+[[package]]
+name = "plone-zyklopenkekse"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "cookiecutter" },
+    { name = "httpx" },
+    { name = "mxmake" },
+    { name = "textual" },
+]
+
+[package.optional-dependencies]
+test = [
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cookies" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "cookiecutter", specifier = ">=2.6" },
+    { name = "httpx" },
+    { name = "mxmake" },
+    { name = "pytest", marker = "extra == 'test'" },
+    { name = "pytest-asyncio", marker = "extra == 'test'" },
+    { name = "pytest-cookies", marker = "extra == 'test'" },
+    { name = "textual", specifier = ">=1.0" },
+]
+provides-extras = ["test"]
 
 [[package]]
 name = "pluggy"

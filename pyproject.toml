@@ -1,5 +1,5 @@
 [project]
-name = "cyclop"
+name = "plone-zyklopenkekse"
 version = "0.1.0"
 description = "Plone/Volto monorepo project generator"
 requires-python = ">=3.12"
@@ -21,4 +21,4 @@ test = [
 asyncio_mode = "auto"
 
 [project.scripts]
-cyclop = "helpers.create:main"
+zyklopenkekse = "helpers.create:main"

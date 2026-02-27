@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 #
-# Cyclop: Unified Plone/Volto OCI Image
+# Unified Plone/Volto OCI Image
 #
 # Produces a single image that runs as backend, frontend, or worker
 # depending on the command argument:
@@ -101,7 +101,7 @@ FROM debian:trixie-slim AS runtime
 ARG NODE_VERSION
 ARG COOKIECUTTER_ZOPE_INSTANCE_VERSION
 
-LABEL org.opencontainers.image.description="Cyclop: Unified Plone/Volto image"
+LABEL org.opencontainers.image.description="Unified Plone/Volto image"
 
 # Runtime-only system dependencies
 RUN \

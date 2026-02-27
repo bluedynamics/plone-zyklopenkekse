@@ -1,4 +1,4 @@
-# Cyclop Roadmap
+# Zyklopenkekse Roadmap
 
 ## Vision
 
@@ -36,7 +36,7 @@ Single multi-stage Dockerfile producing **one image** for all roles:
 - Same image used for all k8s Deployments, `args` selects the role
 - Version sync guaranteed: one build, one tag, one rollback
 
-### 3. Create the cyclop cookiecutter template
+### 3. Create the zyklopenkekse cookiecutter template
 
 Based on cookieplone's sub-template composition pattern (or simplified variant).
 
@@ -67,10 +67,10 @@ ArgoCD points at `deployment/dist/` in the repo.
 | Phase | What | Where |
 |-------|------|-------|
 | **A** | Design and implement mxmake Volto domains | mxmake repo | DONE |
-| **B** | Design unified Dockerfile pattern | cyclop repo | DONE |
-| **C** | Build cookiecutter template structure | cyclop repo | DONE |
-| **D** | Wire in cdk8s-plone deployment template | cyclop repo | DONE |
-| **E** | Root Makefile with proxy delegation | cyclop repo | DONE |
-| **F** | CI pipeline template | cyclop repo | DONE |
+| **B** | Design unified Dockerfile pattern | zyklopenkekse repo | DONE |
+| **C** | Build cookiecutter template structure | zyklopenkekse repo | DONE |
+| **D** | Wire in cdk8s-plone deployment template | zyklopenkekse repo | DONE |
+| **E** | Root Makefile with proxy delegation | zyklopenkekse repo | DONE |
+| **F** | CI pipeline template | zyklopenkekse repo | DONE |
 
 Phase A is the prerequisite — without mxmake frontend domains, the template can't generate frontend Makefiles. Everything else can be somewhat parallel once A is done.

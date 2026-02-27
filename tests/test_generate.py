@@ -8,7 +8,7 @@ from helpers.generate import generate_project
 
 
 def test_template_dir_points_to_repo_root():
-    """TEMPLATE_DIR points to the cyclop repo root."""
+    """TEMPLATE_DIR points to the zyklopenkekse repo root."""
     assert Path(TEMPLATE_DIR).is_dir()
     assert (Path(TEMPLATE_DIR) / "cookiecutter.json").exists()
 
