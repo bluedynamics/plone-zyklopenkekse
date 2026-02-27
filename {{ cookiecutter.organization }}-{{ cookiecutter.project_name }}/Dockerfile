@@ -16,9 +16,11 @@
 #
 #   docker run <image> start-backend     # Plone on :8080
 {% endif %}
+{% if cookiecutter.storage_backend == "relstorage" %}
 #   docker run <image> export            # ZODB export
 #   docker run <image> import            # ZODB import
 #   docker run <image> pack              # ZODB pack
+{% endif %}
 #
 # Extensible via drop-in scripts in deployment/commands.d/
 
@@ -48,7 +50,9 @@ RUN \
         ca-certificates \
         git \
         libmagic1 \
+{% if cookiecutter.storage_backend != "none" %}
         libpq-dev \
+{% endif %}
         make \
         wget && \
     busybox --install -s && \
@@ -130,7 +134,9 @@ RUN \
         busybox \
         ca-certificates \
         libmagic1 \
+{% if cookiecutter.storage_backend != "none" %}
         libpq5 \
+{% endif %}
         make \
         wget && \
     busybox --install -s && \
@@ -188,6 +194,18 @@ ENV ZOPE_TEMPLATE_CHECKOUT=
 ENV ZOPE_BASE_FOLDER=/
 ENV INSTANCE_target=/instance
 ENV INSTANCE_debug_mode=false
+{% if cookiecutter.storage_backend == "relstorage" %}
+
+# Database: RelStorage with PostgreSQL
+ENV INSTANCE_db_storage=relstorage
+ENV INSTANCE_db_blob_mode=cache
+ENV INSTANCE_db_relstorage=postgresql
+{% elif cookiecutter.storage_backend == "pgjsonb" %}
+
+# Database: PGJsonB
+ENV INSTANCE_db_storage=pgjsonb
+ENV INSTANCE_db_blob_mode=cache
+{% endif %}
 
 USER plone
 WORKDIR /backend

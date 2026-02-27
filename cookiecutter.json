@@ -12,6 +12,7 @@
   "pnpm_version": "9",
   "initial_user_password": "admin",
   "include_frontend": "yes",
+  "storage_backend": "relstorage",
   "ci_platform": "github",
   "include_varnish": "yes",
   "include_ingress": "yes",

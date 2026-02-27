@@ -18,8 +18,12 @@ test = [
     "pytest-plone",
 ]
 production = [
+{% if cookiecutter.storage_backend == "relstorage" %}
     "relstorage[postgresql]",
     "psycopg[binary]",
+{% elif cookiecutter.storage_backend == "pgjsonb" %}
+    "zodb-pgjsonb",
+{% endif %}
 ]
 
 [build-system]
