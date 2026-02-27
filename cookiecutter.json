@@ -1,5 +1,22 @@
 {
   "_version": "1.0.0",
-  "target": "my-project",
-  "project": "myproject"
+  "organization": "myorg",
+  "project_name": "myproject",
+  "title": "My Project",
+  "author": "John Doe",
+  "author_email": "john@example.com",
+  "plone_version": "6.1",
+  "volto_version": "18.32.1",
+  "python_version": "3.13",
+  "node_version": "22",
+  "pnpm_version": "9",
+  "initial_user_password": "admin",
+  "ci_platform": "github",
+  "include_varnish": "yes",
+  "include_ingress": "yes",
+  "include_cnpg": "yes",
+  "__container_registry": "ghcr.io/{{ cookiecutter.organization }}",
+  "__target": "{{ cookiecutter.organization }}-{{ cookiecutter.project_name }}",
+  "__python_package": "{{ cookiecutter.organization }}.{{ cookiecutter.project_name }}",
+  "__volto_addon_name": "volto-{{ cookiecutter.organization }}-{{ cookiecutter.project_name }}"
 }

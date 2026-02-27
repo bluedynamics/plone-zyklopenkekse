@@ -1,0 +1,20 @@
+topics:
+  core:
+    base:
+      INCLUDE_MAKEFILE: include.mk
+    mxenv:
+      PYTHON_PACKAGE_INSTALLER: uv
+      PYTHON_MIN_VERSION: "3.12"
+    mxfiles: {}
+    packages: {}
+    sources: {}
+  qa:
+    ruff: {}
+    zpretty: {}
+    test: {}
+    coverage: {}
+  applications:
+    zope: {}
+    plone: {}
+    cookiecutter: {}
+mx-ini: true

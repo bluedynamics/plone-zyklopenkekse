@@ -1,0 +1,75 @@
+---
+stages:
+  - lint
+  - test
+  - build
+
+variables:
+  IMAGE: $CI_REGISTRY_IMAGE
+
+lint-backend:
+  stage: lint
+  image: python:{{ cookiecutter.python_version }}-slim-bookworm
+  before_script:
+    - apt-get update && apt-get install -y make git
+    - pip install uv
+  script:
+    - make backend-install
+    - make backend-check
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+lint-frontend:
+  stage: lint
+  image: node:{{ cookiecutter.node_version }}-slim
+  before_script:
+    - apt-get update && apt-get install -y make git
+    - corepack enable
+  script:
+    - make frontend-install
+    - make frontend-check
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+test-backend:
+  stage: test
+  image: python:{{ cookiecutter.python_version }}-slim-bookworm
+  before_script:
+    - apt-get update && apt-get install -y make git
+    - pip install uv
+  script:
+    - make backend-install
+    - make backend-test
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+test-frontend:
+  stage: test
+  image: node:{{ cookiecutter.node_version }}-slim
+  before_script:
+    - apt-get update && apt-get install -y make git
+    - corepack enable
+  script:
+    - make frontend-install
+    - make frontend-test
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+build-image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker buildx create --use
+  script:
+    - >
+      docker buildx build
+      --platform linux/amd64,linux/arm64
+      --tag $IMAGE:$CI_COMMIT_SHORT_SHA
+      --tag $IMAGE:latest
+      --push .
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: '$CI_COMMIT_TAG =~ /^v[0-9]+\.[0-9]+\.[0-9]+$/'

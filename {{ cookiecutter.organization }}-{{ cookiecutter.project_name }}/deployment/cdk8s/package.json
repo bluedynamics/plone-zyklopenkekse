@@ -1,0 +1,23 @@
+{
+  "name": "{{ cookiecutter.__target }}-deployment",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "import": "cdk8s import",
+    "synth": "cdk8s synth",
+    "compile": "tsc --build",
+    "build": "npm run compile && npm run synth"
+  },
+  "dependencies": {
+    "@bluedynamics/cdk8s-plone": "^0.1.5",
+    "cdk8s": "^2.70.29",
+    "cdk8s-plus-30": "^2.4.10",
+    "constructs": "^10.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18",
+    "cdk8s-cli": "^2.200.90",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

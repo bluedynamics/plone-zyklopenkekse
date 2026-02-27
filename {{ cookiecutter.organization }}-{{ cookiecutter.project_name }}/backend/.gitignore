@@ -1,0 +1,20 @@
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Virtual environment
+.venv/
+
+# mxmake
+.mxmake/
+*-mxdev.txt
+
+# Zope instance
+instance/
+
+# Testing / QA
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/

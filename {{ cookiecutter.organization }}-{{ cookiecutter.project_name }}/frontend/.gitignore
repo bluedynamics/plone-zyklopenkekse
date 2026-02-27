@@ -1,0 +1,7 @@
+node_modules/
+core/
+build/
+.cache/
+.storybook-build/
+.pnpm-store/
+*.log

@@ -1,0 +1,24 @@
+[project]
+name = "cyclop"
+version = "0.1.0"
+description = "Plone/Volto monorepo project generator"
+requires-python = ">=3.12"
+dependencies = [
+    "cookiecutter>=2.6",
+    "mxmake",
+    "textual>=1.0",
+    "httpx",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cookies",
+    "pytest-asyncio",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[project.scripts]
+cyclop = "helpers.create:main"

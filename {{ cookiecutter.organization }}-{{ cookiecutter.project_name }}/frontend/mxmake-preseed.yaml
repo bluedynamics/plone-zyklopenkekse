@@ -1,0 +1,11 @@
+topics:
+  core:
+    base: {}
+  volto:
+    core:
+      VOLTO_ADDON_NAME: {{ cookiecutter.__volto_addon_name }}
+    lint: {}
+    test: {}
+    i18n: {}
+    storybook: {}
+    acceptance: {}

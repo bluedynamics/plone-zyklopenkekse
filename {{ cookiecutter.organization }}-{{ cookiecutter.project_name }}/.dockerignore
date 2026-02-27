@@ -1,0 +1,27 @@
+# Development artifacts
+**/.venv
+**/.tox
+**/node_modules
+**/.mxmake
+**/instance
+**/core/.git
+
+# Frontend build artifacts (rebuilt inside Docker)
+frontend/build
+frontend/core
+frontend/.storybook-build
+
+# Backend build artifacts
+backend/.pytest_cache
+backend/.ruff_cache
+
+# VCS and CI
+.git
+.github
+.gitlab-ci.yml
+
+# Documentation (not needed in image)
+docs/
+
+# cdk8s deployment (Kubernetes manifests, not needed in image)
+deployment/cdk8s/

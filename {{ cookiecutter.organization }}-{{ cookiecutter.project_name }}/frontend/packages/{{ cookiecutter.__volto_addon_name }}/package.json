@@ -1,0 +1,26 @@
+{
+  "name": "{{ cookiecutter.__volto_addon_name }}",
+  "version": "1.0.0-alpha.0",
+  "description": "{{ cookiecutter.title }}",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "author": "{{ cookiecutter.author }}",
+  "scripts": {
+    "i18n": "rm -rf build/messages && NODE_ENV=production i18n --addon"
+  },
+  "addons": [],
+  "theme": "",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@plone/registry": "workspace:*",
+    "@plone/scripts": "workspace:*",
+    "@plone/types": "workspace:*",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.7.3"
+  }
+}

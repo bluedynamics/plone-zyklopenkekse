@@ -1,0 +1,4 @@
+---
+default_context:
+    wsgi_fast_listen: 0.0.0.0:8080
+    initial_user_password: {{ cookiecutter.initial_user_password }}

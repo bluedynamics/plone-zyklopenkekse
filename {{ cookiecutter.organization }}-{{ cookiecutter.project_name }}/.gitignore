@@ -1,0 +1,18 @@
+# Python
+*.pyc
+__pycache__/
+
+# Node
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# mxmake
+.mxmake/
+*-mxdev.txt
+
+# Build artifacts
+instance/
+.venv

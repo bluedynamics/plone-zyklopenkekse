@@ -1,0 +1,6 @@
+language: typescript
+app: npx ts-node main.ts
+imports:
+  - k8s
+{% if cookiecutter.include_cnpg == "yes" %}  - https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.25/config/crd/bases/postgresql.cnpg.io_clusters.yaml
+{% endif %}

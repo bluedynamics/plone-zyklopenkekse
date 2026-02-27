@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "declaration": true,
+    "inlineSourceMap": true,
+    "lib": ["es2016"],
+    "module": "CommonJS",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "target": "ES2017"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}
