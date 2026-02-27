@@ -1,6 +1,7 @@
 # Zyklopenkekse
 
 *German for "cyclops cookies" — one-eyed biscuits with a single jam dot in the center, a beloved Austrian/German holiday treat.*
+(also available with three dots)
 
 A [cookiecutter](https://cookiecutter.readthedocs.io/) template that generates production-ready **Plone 6 + Volto** monorepo projects.
 
