@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 #
+{% if cookiecutter.include_frontend == "yes" %}
 # {{ cookiecutter.title }}: Unified Plone/Volto OCI Image
 #
 # Produces a single image that runs as backend, frontend, or worker
@@ -7,6 +8,14 @@
 #
 #   docker run <image> start-backend     # Plone on :8080
 #   docker run <image> start-frontend    # Volto on :3000
+{% else %}
+# {{ cookiecutter.title }}: Plone OCI Image
+#
+# Produces a single image that runs as backend or worker
+# depending on the command argument:
+#
+#   docker run <image> start-backend     # Plone on :8080
+{% endif %}
 #   docker run <image> export            # ZODB export
 #   docker run <image> import            # ZODB import
 #   docker run <image> pack              # ZODB pack
@@ -14,8 +23,10 @@
 # Extensible via drop-in scripts in deployment/commands.d/
 
 ARG PYTHON_VERSION={{ cookiecutter.python_version }}
+{% if cookiecutter.include_frontend == "yes" %}
 ARG NODE_VERSION={{ cookiecutter.node_version }}
 ARG PNPM_VERSION={{ cookiecutter.pnpm_version }}
+{% endif %}
 ARG COOKIECUTTER_ZOPE_INSTANCE_VERSION=2.2.1
 
 # =============================================================================
@@ -57,6 +68,7 @@ RUN \
     make packages cookiecutter && \
     find /venv \( -type f -a -name '*.pyc' -o -name '*.pyo' \) -exec rm -rf '{}' + && \
     uv cache clean
+{% if cookiecutter.include_frontend == "yes" %}
 
 # =============================================================================
 # Stage 2: Frontend Build
@@ -92,16 +104,23 @@ RUN --mount=type=cache,id=pnpm,target=/frontend/.pnpm-store,uid=500 \
     pnpm build && \
     CI=1 pnpm install --prod && \
     rm -rf core/.git .cache
+{% endif %}
 
 # =============================================================================
-# Stage 3: Runtime (final image)
+# Stage {{ "3" if cookiecutter.include_frontend == "yes" else "2" }}: Runtime (final image)
 # =============================================================================
 FROM debian:trixie-slim AS runtime
 
+{% if cookiecutter.include_frontend == "yes" %}
 ARG NODE_VERSION
+{% endif %}
 ARG COOKIECUTTER_ZOPE_INSTANCE_VERSION
 
+{% if cookiecutter.include_frontend == "yes" %}
 LABEL org.opencontainers.image.description="{{ cookiecutter.title }}: Unified Plone/Volto image"
+{% else %}
+LABEL org.opencontainers.image.description="{{ cookiecutter.title }}: Plone image"
+{% endif %}
 
 # Runtime-only system dependencies
 RUN \
@@ -120,6 +139,7 @@ RUN \
     chown plone:plone /instance && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/*
+{% if cookiecutter.include_frontend == "yes" %}
 
 # Node.js runtime (just the binaries, no build tools)
 COPY --from=frontend-build /usr/local/bin/node /usr/local/bin/node
@@ -128,15 +148,18 @@ RUN \
     ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
     npm i -g corepack@latest && \
     corepack enable
+{% endif %}
 
 # Python venv from backend build
 COPY --from=backend-build --chown=plone:plone /venv /venv
 
 # Backend application
 COPY --from=backend-build --chown=plone:plone /backend /backend
+{% if cookiecutter.include_frontend == "yes" %}
 
 # Frontend application
 COPY --from=frontend-build --chown=plone:plone /frontend /frontend
+{% endif %}
 
 # Deployment scripts (cross-cutting, separate from backend/frontend)
 COPY --chown=plone:plone ./deployment /deployment
@@ -169,7 +192,11 @@ ENV INSTANCE_debug_mode=false
 USER plone
 WORKDIR /backend
 
+{% if cookiecutter.include_frontend == "yes" %}
 EXPOSE 8080 3000
+{% else %}
+EXPOSE 8080
+{% endif %}
 
 HEALTHCHECK --interval=10s --timeout=5s --start-period=60s CMD exit 0
 

@@ -41,8 +41,14 @@ def main():
     # Generate backend Makefile
     run_mxmake_init(os.path.join(project_dir, "backend"))
 
-    # Generate frontend Makefile
-    run_mxmake_init(os.path.join(project_dir, "frontend"))
+    # Generate frontend Makefile or remove frontend directory
+    frontend_dir = os.path.join(project_dir, "frontend")
+    if "{{ cookiecutter.include_frontend }}" == "yes":
+        run_mxmake_init(frontend_dir)
+    else:
+        if os.path.isdir(frontend_dir):
+            shutil.rmtree(frontend_dir)
+            print("  Removed frontend/ (ClassicUI mode)")
 
     # Make entrypoint executable
     entrypoint = os.path.join(project_dir, "deployment", "entrypoint.sh")
@@ -107,7 +113,8 @@ def main():
     print("Done! Your project is ready.")
     print(f"  cd {{ cookiecutter.__target }}")
     print("  cd backend && make install")
-    print("  cd ../frontend && make install")
+    if "{{ cookiecutter.include_frontend }}" == "yes":
+        print("  cd ../frontend && make install")
 
 
 if __name__ == "__main__":

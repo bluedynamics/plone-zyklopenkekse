@@ -1,15 +1,21 @@
 # Development artifacts
 **/.venv
 **/.tox
+{% if cookiecutter.include_frontend == "yes" %}
 **/node_modules
+{% endif %}
 **/.mxmake
 **/instance
+{% if cookiecutter.include_frontend == "yes" %}
 **/core/.git
+{% endif %}
+{% if cookiecutter.include_frontend == "yes" %}
 
 # Frontend build artifacts (rebuilt inside Docker)
 frontend/build
 frontend/core
 frontend/.storybook-build
+{% endif %}
 
 # Backend build artifacts
 backend/.pytest_cache

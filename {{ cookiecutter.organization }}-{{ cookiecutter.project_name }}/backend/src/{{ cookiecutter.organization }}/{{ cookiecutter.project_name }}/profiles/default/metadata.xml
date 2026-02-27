@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
   <version>1000</version>
+{% if cookiecutter.include_frontend == "yes" %}
   <dependencies>
     <dependency>profile-plone.volto:default</dependency>
   </dependencies>
+{% endif %}
 </metadata>

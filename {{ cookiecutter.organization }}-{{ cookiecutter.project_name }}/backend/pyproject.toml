@@ -7,7 +7,9 @@ requires-python = ">={{ cookiecutter.python_version }}"
 license = {text = "GPL-2.0-only"}
 dependencies = [
     "plone.distribution",
+{% if cookiecutter.include_frontend == "yes" %}
     "plone.volto",
+{% endif %}
 ]
 
 [project.optional-dependencies]

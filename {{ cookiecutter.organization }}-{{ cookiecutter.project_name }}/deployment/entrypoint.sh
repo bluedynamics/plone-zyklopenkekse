@@ -4,7 +4,11 @@ set -e
 # ---------------------------------------------------------------------------
 # {{ cookiecutter.title }} OCI Image Entrypoint
 #
+{% if cookiecutter.include_frontend == "yes" %}
 # Built-in commands: start-backend, start-frontend, export, import, pack
+{% else %}
+# Built-in commands: start-backend, export, import, pack
+{% endif %}
 # Extensible: drop scripts into /deployment/commands.d/<command>.sh
 # ---------------------------------------------------------------------------
 
@@ -31,10 +35,12 @@ case "$1" in
         echo "Starting Plone backend"
         exec make zope-start
         ;;
+{% if cookiecutter.include_frontend == "yes" %}
     start-frontend)
         echo "Starting Volto frontend"
         cd /frontend && exec pnpm start:prod
         ;;
+{% endif %}
     export)
         setup_zope
         echo "Exporting ZODB to filestorage"

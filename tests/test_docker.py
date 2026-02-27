@@ -52,7 +52,7 @@ def test_entrypoint_references_deployment(cookies, default_context):
 
 
 def test_entrypoint_has_all_commands(cookies, default_context):
-    """Entrypoint supports all expected commands."""
+    """Entrypoint supports all expected commands (with frontend)."""
     result = cookies.bake(extra_context=default_context)
     content = (result.project_path / "deployment" / "entrypoint.sh").read_text()
     for cmd in ["start-backend", "start-frontend", "export", "import", "pack"]:
@@ -63,3 +63,22 @@ def test_dockerignore_exists(cookies, default_context):
     """Docker ignore file is present."""
     result = cookies.bake(extra_context=default_context)
     assert (result.project_path / ".dockerignore").exists()
+
+
+def test_dockerfile_no_frontend(cookies, no_frontend_context):
+    """Dockerfile without frontend has no frontend-build stage."""
+    result = cookies.bake(extra_context=no_frontend_context)
+    content = (result.project_path / "Dockerfile").read_text()
+    assert "frontend-build" not in content
+    assert "NODE_VERSION" not in content
+    assert "PNPM_VERSION" not in content
+    assert "EXPOSE 8080" in content
+    assert "3000" not in content
+
+
+def test_entrypoint_no_frontend(cookies, no_frontend_context):
+    """Entrypoint without frontend has no start-frontend command."""
+    result = cookies.bake(extra_context=no_frontend_context)
+    content = (result.project_path / "deployment" / "entrypoint.sh").read_text()
+    assert "start-backend" in content
+    assert "start-frontend" not in content

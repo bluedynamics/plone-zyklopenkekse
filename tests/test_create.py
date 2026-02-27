@@ -43,7 +43,7 @@ def app():
 async def test_app_starts(app, mock_versions):
     """App starts without error."""
     async with app.run_test() as pilot:
-        assert app.title == "Zyklopenkekse - Create Plone/Volto Project"
+        assert app.title == "Zyklopenkekse - Create Plone Project"
 
 
 async def test_app_has_all_input_fields(app, mock_versions):
@@ -195,6 +195,7 @@ async def test_collect_values_all_fields(app, mock_versions):
             "node_version",
             "pnpm_version",
             "initial_user_password",
+            "include_frontend",
             "container_registry",
             "ci_platform",
             "include_varnish",

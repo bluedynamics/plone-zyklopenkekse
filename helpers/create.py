@@ -33,9 +33,9 @@ def _git_config(key: str, fallback: str = "") -> str:
 
 
 class ZyklopenkekseCreateApp(App):
-    """Textual app for creating Plone/Volto projects."""
+    """Textual app for creating Plone projects."""
 
-    TITLE = "Zyklopenkekse - Create Plone/Volto Project"
+    TITLE = "Zyklopenkekse - Create Plone Project"
     CSS = """
     Screen {
         layout: vertical;
@@ -121,6 +121,9 @@ class ZyklopenkekseCreateApp(App):
                     id="title",
                     classes="form-input",
                 )
+            with Horizontal(classes="switch-row"):
+                yield Static("Include Frontend (Volto)", classes="switch-label")
+                yield Switch(value=True, id="include_frontend")
             with Horizontal(classes="form-row"):
                 yield Static("Plone Version", classes="form-label")
                 yield Select(
@@ -349,12 +352,17 @@ class ZyklopenkekseCreateApp(App):
         """Update the summary display with derived values."""
         org = self.query_one("#organization", Input).value
         proj = self.query_one("#project_name", Input).value
+        include_frontend = self.query_one("#include_frontend", Switch).value
         summary = self.query_one("#summary", Static)
-        summary.update(
-            f"  Output: {org}-{proj}/\n"
-            f"  Package: {org}.{proj}\n"
-            f"  Addon: volto-{org}-{proj}"
-        )
+        lines = [
+            f"  Output: {org}-{proj}/",
+            f"  Package: {org}.{proj}",
+        ]
+        if include_frontend:
+            lines.append(f"  Addon: volto-{org}-{proj}")
+        else:
+            lines.append("  Mode: ClassicUI (no Volto frontend)")
+        summary.update("\n".join(lines))
 
     def _collect_values(self) -> dict:
         """Collect all form values into a cookiecutter context dict."""
@@ -380,6 +388,7 @@ class ZyklopenkekseCreateApp(App):
             "node_version": _get_select("node_version"),
             "pnpm_version": _get_select("pnpm_version"),
             "initial_user_password": _get_input("initial_user_password"),
+            "include_frontend": _get_switch("include_frontend"),
             "container_registry": _get_input("container_registry"),
             "ci_platform": _get_select("ci_platform"),
             "include_varnish": _get_switch("include_varnish"),

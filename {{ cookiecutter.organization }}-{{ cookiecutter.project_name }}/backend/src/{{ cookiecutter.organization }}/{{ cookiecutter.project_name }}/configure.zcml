@@ -6,7 +6,9 @@
     i18n_domain="{{ cookiecutter.__python_package }}"
     >
   <i18n:registerTranslations directory="locales" />
+{% if cookiecutter.include_frontend == "yes" %}
   <include package="plone.volto" />
+{% endif %}
   <include package="plone.distribution" />
   <include package="plone.distribution" file="meta.zcml" />
 

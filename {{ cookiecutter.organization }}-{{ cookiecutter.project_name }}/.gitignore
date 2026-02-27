@@ -1,9 +1,11 @@
 # Python
 *.pyc
 __pycache__/
+{% if cookiecutter.include_frontend == "yes" %}
 
 # Node
 node_modules/
+{% endif %}
 
 # IDE
 .vscode/

@@ -1,5 +1,9 @@
 # Makefile for {{ cookiecutter.__target }}
+{% if cookiecutter.include_frontend == "yes" %}
 # Delegates to backend/ and frontend/ Makefiles
+{% else %}
+# Delegates to backend/ Makefile
+{% endif %}
 
 .DEFAULT_GOAL := help
 
@@ -33,6 +37,7 @@ backend-format: ## Format backend code
 .PHONY: backend-clean
 backend-clean: ## Clean backend installation
 	$(MAKE) -C backend clean
+{% if cookiecutter.include_frontend == "yes" %}
 
 ##############################################################################
 # Frontend
@@ -77,28 +82,51 @@ frontend-storybook-build: ## Build Storybook
 .PHONY: frontend-clean
 frontend-clean: ## Clean frontend installation
 	$(MAKE) -C frontend clean
+{% endif %}
 
 ##############################################################################
 # Orchestration
 ##############################################################################
 
 .PHONY: install
+{% if cookiecutter.include_frontend == "yes" %}
 install: backend-install frontend-install ## Install backend and frontend
+{% else %}
+install: backend-install ## Install backend
+{% endif %}
 
 .PHONY: check
+{% if cookiecutter.include_frontend == "yes" %}
 check: backend-check frontend-check ## Run all code checks
+{% else %}
+check: backend-check ## Run all code checks
+{% endif %}
 
 .PHONY: format
+{% if cookiecutter.include_frontend == "yes" %}
 format: backend-format frontend-format ## Format all code
+{% else %}
+format: backend-format ## Format all code
+{% endif %}
 
 .PHONY: test
+{% if cookiecutter.include_frontend == "yes" %}
 test: backend-test frontend-test ## Run all tests
+{% else %}
+test: backend-test ## Run all tests
+{% endif %}
+{% if cookiecutter.include_frontend == "yes" %}
 
 .PHONY: i18n
 i18n: frontend-i18n ## Sync translations
+{% endif %}
 
 .PHONY: clean
+{% if cookiecutter.include_frontend == "yes" %}
 clean: backend-clean frontend-clean ## Clean all installations
+{% else %}
+clean: backend-clean ## Clean all installations
+{% endif %}
 
 ##############################################################################
 # Docker

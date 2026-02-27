@@ -5,12 +5,18 @@ Container runtime and Kubernetes deployment for {{ cookiecutter.title }}.
 ## Container Image
 
 The project uses a unified multi-stage Docker image (see `../Dockerfile`).
+{% if cookiecutter.include_frontend == "yes" %}
 A single image serves all roles, selected via the entrypoint argument:
+{% else %}
+The image serves backend roles, selected via the entrypoint argument:
+{% endif %}
 
 | Command | Port | Description |
 |---------|------|-------------|
 | `start-backend` | 8080 | Plone/Zope application server |
+{% if cookiecutter.include_frontend == "yes" %}
 | `start-frontend` | 3000 | Volto Node.js server |
+{% endif %}
 | `export` | - | ZODB export |
 | `import` | - | ZODB import |
 | `pack` | - | ZODB pack (garbage collection) |
@@ -68,7 +74,9 @@ Key variables:
 | `IMAGE_TAG` | `latest` | Image tag |
 | `DOMAIN` | `{{ cookiecutter.project_name }}.example.com` | Public domain |
 | `BACKEND_REPLICAS` | `2` | Backend pod count |
+{% if cookiecutter.include_frontend == "yes" -%}
 | `FRONTEND_REPLICAS` | `2` | Frontend pod count |
+{% endif -%}
 {% if cookiecutter.include_cnpg == "yes" -%}
 | `PG_INSTANCES` | `2` | PostgreSQL instances (CloudNativePG) |
 | `PG_STORAGE` | `20Gi` | PostgreSQL storage size |
@@ -89,7 +97,11 @@ ArgoCD or `kubectl apply`.
 - **Varnish** (HTTP cache) - routes public traffic through cache layer
 {% endif -%}
 {% if cookiecutter.include_ingress == "yes" -%}
+{% if cookiecutter.include_frontend == "yes" -%}
 - **Ingress** - TLS termination via cert-manager, routes `++api++` to backend
+{% else -%}
+- **Ingress** - TLS termination via cert-manager, routes traffic to backend
+{% endif -%}
 {% endif -%}
 {% if cookiecutter.include_cnpg == "yes" -%}
 - **CloudNativePG** - PostgreSQL operator for automated HA databases

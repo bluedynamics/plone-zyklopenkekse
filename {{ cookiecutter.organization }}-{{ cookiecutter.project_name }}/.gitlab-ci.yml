@@ -18,6 +18,7 @@ lint-backend:
     - make backend-check
   rules:
     - if: $CI_COMMIT_BRANCH
+{% if cookiecutter.include_frontend == "yes" %}
 
 lint-frontend:
   stage: lint
@@ -30,6 +31,7 @@ lint-frontend:
     - make frontend-check
   rules:
     - if: $CI_COMMIT_BRANCH
+{% endif %}
 
 test-backend:
   stage: test
@@ -42,6 +44,7 @@ test-backend:
     - make backend-test
   rules:
     - if: $CI_COMMIT_BRANCH
+{% if cookiecutter.include_frontend == "yes" %}
 
 test-frontend:
   stage: test
@@ -54,6 +57,7 @@ test-frontend:
     - make frontend-test
   rules:
     - if: $CI_COMMIT_BRANCH
+{% endif %}
 
 build-image:
   stage: build

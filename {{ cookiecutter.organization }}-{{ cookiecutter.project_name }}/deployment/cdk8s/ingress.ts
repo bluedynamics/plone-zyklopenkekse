@@ -7,7 +7,9 @@ export interface PloneIngressOptions {
   readonly domainMaintenance?: string;
   readonly certIssuer?: string;
   readonly backendServiceName: string;
+{% if cookiecutter.include_frontend == "yes" %}
   readonly frontendServiceName: string;
+{% endif %}
 }
 
 
@@ -20,6 +22,7 @@ export class PloneIngress extends Construct {
       annotations['cert-manager.io/cluster-issuer'] = options.certIssuer;
     }
 
+{% if cookiecutter.include_frontend == "yes" %}
     // Main ingress — frontend serves /, API requests go to backend
     new k8s.KubeIngress(this, 'main', {
       metadata: { annotations },
@@ -59,6 +62,37 @@ export class PloneIngress extends Construct {
         ],
       },
     });
+{% else %}
+    // Main ingress — all traffic goes to backend (ClassicUI)
+    new k8s.KubeIngress(this, 'main', {
+      metadata: { annotations },
+      spec: {
+        tls: options.certIssuer ? [{
+          hosts: [options.domain],
+          secretName: `${options.domain}-tls`,
+        }] : undefined,
+        rules: [
+          {
+            host: options.domain,
+            http: {
+              paths: [
+                {
+                  path: '/',
+                  pathType: 'Prefix',
+                  backend: {
+                    service: {
+                      name: options.backendServiceName,
+                      port: { number: 8080 },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    });
+{% endif %}
 
     // Maintenance ingress — direct backend access
     if (options.domainMaintenance) {

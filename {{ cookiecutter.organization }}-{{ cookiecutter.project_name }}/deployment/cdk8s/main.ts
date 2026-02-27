@@ -60,11 +60,13 @@ export class {{ cookiecutter.project_name | capitalize }}Chart extends Chart {
         environment: env,
         replicas: Number(process.env.BACKEND_REPLICAS ?? '2'),
       },
+{% if cookiecutter.include_frontend == "yes" %}
       frontend: {
         image: image,
         args: ['start-frontend'],
         replicas: Number(process.env.FRONTEND_REPLICAS ?? '2'),
       },
+{% endif %}
     });
 {% if cookiecutter.include_varnish == "yes" %}
 
@@ -81,7 +83,9 @@ export class {{ cookiecutter.project_name | capitalize }}Chart extends Chart {
       domainMaintenance: process.env.DOMAIN_MAINTENANCE ?? 'admin.{{ cookiecutter.project_name }}.example.com',
       certIssuer: process.env.CERT_ISSUER ?? 'letsencrypt-prod',
       backendServiceName: plone.backendServiceName,
+{% if cookiecutter.include_frontend == "yes" %}
       frontendServiceName: plone.frontendServiceName ?? '',
+{% endif %}
     });
 {% endif %}
   }
