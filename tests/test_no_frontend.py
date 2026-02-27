@@ -2,66 +2,88 @@
 import tempfile
 from pathlib import Path
 
+import pytest
+
 from helpers.generate import generate_project
 
 
-def _generate_no_frontend(**extra):
-    """Generate a project without frontend and return project path."""
+@pytest.fixture(scope="module")
+def no_frontend_project():
+    """Generate a no-frontend project once, reuse across tests."""
     ctx = {
         "organization": "testorg",
         "project_name": "testproject",
         "include_frontend": "no",
     }
-    ctx.update(extra)
     tmpdir = tempfile.mkdtemp()
     return Path(generate_project(ctx, output_dir=tmpdir))
 
 
-def test_no_frontend_directory():
+@pytest.fixture(scope="module")
+def no_frontend_github_project():
+    """Generate a no-frontend project with GitHub CI."""
+    ctx = {
+        "organization": "testorg",
+        "project_name": "testproject",
+        "include_frontend": "no",
+        "ci_platform": "github",
+    }
+    tmpdir = tempfile.mkdtemp()
+    return Path(generate_project(ctx, output_dir=tmpdir))
+
+
+@pytest.fixture(scope="module")
+def no_frontend_gitlab_project():
+    """Generate a no-frontend project with GitLab CI."""
+    ctx = {
+        "organization": "testorg",
+        "project_name": "testproject",
+        "include_frontend": "no",
+        "ci_platform": "gitlab",
+    }
+    tmpdir = tempfile.mkdtemp()
+    return Path(generate_project(ctx, output_dir=tmpdir))
+
+
+def test_no_frontend_directory(no_frontend_project):
     """No frontend/ directory when include_frontend=no."""
-    project = _generate_no_frontend()
-    assert not (project / "frontend").exists()
+    assert not (no_frontend_project / "frontend").exists()
 
 
-def test_backend_exists():
+def test_backend_exists(no_frontend_project):
     """Backend directory still exists without frontend."""
-    project = _generate_no_frontend()
-    assert (project / "backend").is_dir()
-    assert (project / "backend" / "pyproject.toml").exists()
+    assert (no_frontend_project / "backend").is_dir()
+    assert (no_frontend_project / "backend" / "pyproject.toml").exists()
 
 
-def test_backend_no_plone_volto_dep():
+def test_backend_no_plone_volto_dep(no_frontend_project):
     """Backend pyproject.toml has no plone.volto dependency."""
-    project = _generate_no_frontend()
-    content = (project / "backend" / "pyproject.toml").read_text()
+    content = (no_frontend_project / "backend" / "pyproject.toml").read_text()
     assert "plone.volto" not in content
     assert "plone.distribution" in content
 
 
-def test_configure_zcml_no_plone_volto():
+def test_configure_zcml_no_plone_volto(no_frontend_project):
     """configure.zcml does not include plone.volto."""
-    project = _generate_no_frontend()
     zcml = (
-        project / "backend" / "src" / "testorg" / "testproject" / "configure.zcml"
+        no_frontend_project / "backend" / "src" / "testorg" / "testproject" / "configure.zcml"
     ).read_text()
     assert "plone.volto" not in zcml
     assert "plone.distribution" in zcml
 
 
-def test_metadata_xml_no_volto_dependency():
+def test_metadata_xml_no_volto_dependency(no_frontend_project):
     """Default profile metadata.xml has no plone.volto dependency."""
-    project = _generate_no_frontend()
     metadata = (
-        project / "backend" / "src" / "testorg" / "testproject"
+        no_frontend_project / "backend" / "src" / "testorg" / "testproject"
         / "profiles" / "default" / "metadata.xml"
     ).read_text()
     assert "plone.volto" not in metadata
 
 
-def test_makefile_no_frontend_targets():
+def test_makefile_no_frontend_targets(no_frontend_project):
     """Root Makefile has no frontend targets."""
-    project = _generate_no_frontend()
-    content = (project / "Makefile").read_text()
+    content = (no_frontend_project / "Makefile").read_text()
     assert "frontend-install" not in content
     assert "frontend-start" not in content
     assert "frontend-test" not in content
@@ -71,85 +93,75 @@ def test_makefile_no_frontend_targets():
     assert "$(MAKE) -C backend" in content
 
 
-def test_makefile_no_i18n_target():
+def test_makefile_no_i18n_target(no_frontend_project):
     """Root Makefile has no i18n target without frontend."""
-    project = _generate_no_frontend()
-    content = (project / "Makefile").read_text()
+    content = (no_frontend_project / "Makefile").read_text()
     assert "i18n" not in content
 
 
-def test_dockerfile_no_frontend_stage():
+def test_dockerfile_no_frontend_stage(no_frontend_project):
     """Dockerfile has no frontend-build stage."""
-    project = _generate_no_frontend()
-    content = (project / "Dockerfile").read_text()
+    content = (no_frontend_project / "Dockerfile").read_text()
     assert "frontend-build" not in content
     assert "FROM node:" not in content
 
 
-def test_dockerfile_backend_only_expose():
+def test_dockerfile_backend_only_expose(no_frontend_project):
     """Dockerfile only exposes port 8080."""
-    project = _generate_no_frontend()
-    content = (project / "Dockerfile").read_text()
+    content = (no_frontend_project / "Dockerfile").read_text()
     assert "EXPOSE 8080" in content
     assert "3000" not in content
 
 
-def test_github_ci_no_frontend_jobs():
+def test_github_ci_no_frontend_jobs(no_frontend_github_project):
     """GitHub CI has no frontend steps."""
-    project = _generate_no_frontend(ci_platform="github")
-    ci = (project / ".github" / "workflows" / "ci.yml").read_text()
+    ci = (no_frontend_github_project / ".github" / "workflows" / "ci.yml").read_text()
     assert "backend-check" in ci
     assert "frontend-check" not in ci
     assert "frontend-test" not in ci
     assert "setup-node" not in ci
 
 
-def test_gitlab_ci_no_frontend_jobs():
+def test_gitlab_ci_no_frontend_jobs(no_frontend_gitlab_project):
     """GitLab CI has no frontend jobs."""
-    project = _generate_no_frontend(ci_platform="gitlab")
-    ci = (project / ".gitlab-ci.yml").read_text()
+    ci = (no_frontend_gitlab_project / ".gitlab-ci.yml").read_text()
     assert "lint-backend" in ci
     assert "lint-frontend" not in ci
     assert "test-frontend" not in ci
 
 
-def test_cdk8s_no_frontend_pod():
+def test_cdk8s_no_frontend_pod(no_frontend_project):
     """cdk8s main.ts has no frontend pod definition."""
-    project = _generate_no_frontend()
-    content = (project / "deployment" / "cdk8s" / "main.ts").read_text()
+    content = (no_frontend_project / "deployment" / "cdk8s" / "main.ts").read_text()
     assert "start-backend" in content
     assert "start-frontend" not in content
     assert "FRONTEND_REPLICAS" not in content
 
 
-def test_cdk8s_env_no_frontend_replicas():
+def test_cdk8s_env_no_frontend_replicas(no_frontend_project):
     """cdk8s .env.example has no FRONTEND_REPLICAS."""
-    project = _generate_no_frontend()
-    content = (project / "deployment" / "cdk8s" / ".env.example").read_text()
+    content = (no_frontend_project / "deployment" / "cdk8s" / ".env.example").read_text()
     assert "BACKEND_REPLICAS" in content
     assert "FRONTEND_REPLICAS" not in content
 
 
-def test_readme_classicui():
+def test_readme_classicui(no_frontend_project):
     """Root README mentions ClassicUI, not Volto."""
-    project = _generate_no_frontend()
-    content = (project / "README.md").read_text()
+    content = (no_frontend_project / "README.md").read_text()
     assert "ClassicUI" in content
     assert "Volto" not in content
     assert "frontend-start" not in content
 
 
-def test_gitignore_no_node_modules():
+def test_gitignore_no_node_modules(no_frontend_project):
     """.gitignore has no node_modules entry."""
-    project = _generate_no_frontend()
-    content = (project / ".gitignore").read_text()
+    content = (no_frontend_project / ".gitignore").read_text()
     assert "node_modules" not in content
 
 
-def test_entrypoint_no_start_frontend():
+def test_entrypoint_no_start_frontend(no_frontend_project):
     """Entrypoint has no start-frontend command."""
-    project = _generate_no_frontend()
-    content = (project / "deployment" / "entrypoint.sh").read_text()
+    content = (no_frontend_project / "deployment" / "entrypoint.sh").read_text()
     assert "start-backend" in content
     assert "start-frontend" not in content
 
