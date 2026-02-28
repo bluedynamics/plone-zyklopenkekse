@@ -1,9 +1,22 @@
 # Zyklopenkekse
 
-*German for "cyclops cookies" — one-eyed biscuits with a single jam dot in the center, a beloved Austrian/German holiday treat.*
+*German for "cyclops cookies" -- one-eyed biscuits with a single jam dot in the center, a beloved Austrian/German holiday treat.*
 (also available with three dots)
 
-A [cookiecutter](https://cookiecutter.readthedocs.io/) template that generates production-ready **Plone 6** projects — with **Volto** frontend or **ClassicUI**-only.
+**One Mono-Repo, all-in-one OCI-image.**
+Very opinionated, built for cloud native deployments.
+
+A [cookiecutter](https://cookiecutter.readthedocs.io/) template that generates production-ready **Plone 6** projects -- with **Volto** frontend or **ClassicUI**-only.
+
+## Quick start
+
+```bash
+# Interactive mode (TUI)
+uvx plone-zyklopenkekse
+
+# Non-interactive
+uvx cookiecutter gh:bluedynamics/plone-zyklopenkekse
+```
 
 ## What you get
 
@@ -18,30 +31,18 @@ A [cookiecutter](https://cookiecutter.readthedocs.io/) template that generates p
   .gitlab-ci.yml    GitLab CI           } one of these, your choice
 ```
 
-## Features
+## Documentation
 
-- **Volto or ClassicUI** — toggle `include_frontend` to generate with or without a Volto frontend
-- **mxmake-driven builds** in both backend and frontend
-- **Single Docker image** for all roles (backend, frontend, worker) via entrypoint dispatch
-- **Multi-arch images** (amd64 + arm64)
-- **cdk8s-plone** deployment with optional Varnish HTTP cache, Ingress, and CloudNativePG
-- **CI pipelines** for GitHub Actions or GitLab CI (selectable)
-- **Textual TUI** for interactive project creation with live version fetching
+Rendered documentation: **https://bluedynamics.github.io/plone-zyklopenkekse/**
+
+- [Quickstart tutorial](https://bluedynamics.github.io/plone-zyklopenkekse/tutorials/quickstart.html) -- generate your first project
+- [Template options](https://bluedynamics.github.io/plone-zyklopenkekse/how-to/choose-options.html) -- all toggles and settings explained
+- [Architecture](https://bluedynamics.github.io/plone-zyklopenkekse/explanation/architecture.html) -- how it all fits together
 
 ## Requirements
 
 - Python >= 3.12
 - [uv](https://docs.astral.sh/uv/)
-
-## Quick start
-
-```bash
-# Interactive mode (TUI)
-uvx plone-zyklopenkekse
-
-# Non-interactive
-uvx cookiecutter gh:bluedynamics/plone-zyklopenkekse
-```
 
 ## Development
 
@@ -50,6 +51,19 @@ git clone git@github.com:bluedynamics/plone-zyklopenkekse.git
 cd plone-zyklopenkekse
 uv run --extra test pytest tests/ -x -q
 ```
+
+## Source Code and Contributions
+
+The source code is managed in a Git repository, with its main branches hosted on GitHub.
+Issues can be reported there too.
+
+We'd be happy to see many forks and pull requests to make this template even better.
+We welcome AI-assisted contributions, but expect every contributor to fully understand and be able to explain the code they submit.
+Please don't send bulk auto-generated pull requests.
+
+Maintainers are Jens Klein and the BlueDynamics Alliance developer team.
+We appreciate any contribution and if a release on PyPI is needed, please just contact one of us.
+We also offer commercial support if any training, coaching, integration or adaptations are needed.
 
 ## License
 

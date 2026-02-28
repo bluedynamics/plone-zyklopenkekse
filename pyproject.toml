@@ -1,7 +1,7 @@
 [project]
 name = "plone-zyklopenkekse"
 version = "0.1.0"
-description = "Plone/Volto monorepo project generator"
+description = "Plone/Volto monorepo-all-in-one-OCI-image project generator"
 requires-python = ">=3.12"
 dependencies = [
     "cookiecutter>=2.6",
@@ -15,6 +15,15 @@ test = [
     "pytest",
     "pytest-cookies",
     "pytest-asyncio",
+]
+docs = [
+    "sphinx",
+    "sphinx-autobuild",
+    "myst_parser",
+    "sphinxcontrib.mermaid",
+    "shibuya",
+    "sphinx-design",
+    "sphinx-copybutton",
 ]
 
 [tool.pytest.ini_options]
